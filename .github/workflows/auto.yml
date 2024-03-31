@@ -1,0 +1,25 @@
+name: Dockerize Next.js web application
+on: push
+jobs:
+  build-container:
+    name: Build Docker container image
+    runs-on: ubuntu-lastes
+    steps:
+      - name: checkout code
+        uses: actions/checkout@2
+      - name: Publish to GitHub Packages
+  uses: docker/build-push-action@v1
+  with:
+    username: ${{ github.actor }}
+    password: ${{ secrets.GITHUB_TOKEN }}
+    repository: ${{ github.repository }}/windows
+    tags: latest, ${{ github.run_number }}
+
+  -name: Publish to Docker Hub
+   uses: docker/build-push-action@v1
+  with:
+    username: ${{ secrets.DOCKER_USERNAME }}
+    password: ${{ secrets.DOCKER_PASSWORD }}
+    repository: shelg128/windows
+    tags: latest, ${{ github.run_number }}
+  
